@@ -1,0 +1,79 @@
+{
+ "fig1": {
+  "sample": "full eligible samples (the plotted primary comparison)",
+  "n_shots": {
+   "naive": 27563,
+   "corrected": 64764
+  },
+  "games": 437,
+  "naive_efg": [
+   0.4779,
+   0.5267,
+   0.5443,
+   0.5718
+  ],
+  "corrected_efg": [
+   0.5243,
+   0.4977,
+   0.491,
+   0.5055
+  ],
+  "q4_minus_q1": {
+   "naive": 0.0939,
+   "corrected": -0.0188
+  },
+  "corrected_pattern": "non-monotonic; the monotonic naive gradient does not survive alignment",
+  "chart": "grouped bars",
+  "matched_shot_supporting_check_not_plotted": {
+   "n_common_shots": 26177,
+   "naive_efg": [
+    0.4848,
+    0.5316,
+    0.5472,
+    0.5766
+   ],
+   "corrected_efg": [
+    0.5461,
+    0.5154,
+    0.5299,
+    0.5489
+   ],
+   "q4_minus_q1": {
+    "naive": 0.0918,
+    "corrected": 0.0028
+   },
+   "source": "results/matched_shot_audit.json; docs/validation/MATCHED_SHOT_VALIDATION.md"
+  }
+ },
+ "fig2": {
+  "pooled": {
+   "M0": 0.3931,
+   "M1": 0.9419,
+   "M2": 0.9319
+  },
+  "n_games": 631,
+  "wrong_team_shot": [
+   0.6899,
+   0.0353
+  ],
+  "wrong_team_turnover": [
+   0.6069,
+   0.0581
+  ],
+  "onset_lt_0p5": [
+   0.277,
+   0.0474
+  ],
+  "speed_cells": {
+   "A": 6.974,
+   "B": 7.301,
+   "C": 6.627,
+   "D": 6.919
+  },
+  "speed_diffs_sd": {
+   "A_minus_C": 0.215,
+   "A_minus_B": -0.203,
+   "A_minus_D": 0.034
+  }
+ }
+}

@@ -1,0 +1,7 @@
+# user-supplied inputs and regenerated intermediates are never committed to this repository
+data/
+audit/
+tests/_out/
+__pycache__/
+*.parquet
+*.npz

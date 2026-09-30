@@ -1,0 +1,22 @@
+{
+ "figures": {
+  "FIG1_naive_vs_corrected_spacing_efg": {
+   "png_sha256": "57babd7fcc1a7a0eb0eec9a8fe5db6785edfe368ee2d1b2f20ced39ae6d32aab",
+   "pdf_sha256": "60cb13465a96ab2b572e8d3ad03d53af7ffa22363accd7ff7f86948420c1e2b2",
+   "png_px": [
+    1836,
+    1223
+   ],
+   "sample": "full eligible samples: 27,563 naive / 64,764 corrected joined shots (437 validated games)"
+  },
+  "FIG2_measurement_resource_evidence": {
+   "png_sha256": "c487806549cd5894599c2663bc2b88095c4dd9eb2f3c0d252238df62f077f8de",
+   "pdf_sha256": "4b2b1e291e62ef501bc651e41dd6884d97a0c58af664d05270027e8e02b203c2",
+   "png_px": [
+    4621,
+    1426
+   ]
+  }
+ },
+ "note": "PNG hashes are the stable check; matplotlib embeds a creation timestamp in the PDF."
+}

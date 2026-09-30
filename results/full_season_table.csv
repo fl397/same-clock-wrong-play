@@ -1,0 +1,31 @@
+quantity,value
+raw_files,632
+parseable,632
+with_tracking_moments,631
+"calibratable (>=20 labelled shots, >=5 turnovers)",631
+validated,437
+ambiguous (MULTIMODAL within one event),142
+drifting (|dH|>2 s),40
+held-out failures (TO agreement < 0.80),12
+validated_n,437
+validated_median,4.0
+validated_mean,4.161327231121281
+validated_sd,1.0174807328675886
+validated_IQR,"[3.5, 5.0]"
+validated_p05,2.5
+validated_p95,6.0
+validated_range,"[2.0, 7.5]"
+validated_shot_rate_naive_pooled,0.3047805849117363
+validated_shot_rate_calibrated_pooled,0.9775180746756462
+validated_to_rate_naive_pooled,0.3819551446670091
+validated_to_rate_calibrated_pooled,0.935682517960999
+validated_per_game_shot_rate_naive_median,0.2967741935483871
+validated_per_game_shot_rate_calibrated_median,0.9806451612903224
+validated_per_game_shot_rate_calibrated_min,0.8275862068965517
+validated_per_game_to_rate_naive_median,0.3703703703703703
+validated_per_game_to_rate_calibrated_median,0.9411764705882352
+validated_per_game_to_rate_calibrated_min,0.8
+validated_calibration_shots_per_game_median,162.0
+validated_calibration_shots_total,70679
+validated_turnovers_per_game_median,26.0
+validated_turnovers_total,11692

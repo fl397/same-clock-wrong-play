@@ -1,0 +1,27 @@
+# FROZEN before application (2026-09-19) — calibration-uncertainty taxonomy.
+# Inputs: ONLY columns of results/clock_alignment_v1.csv. No lead is changed; the source-exact argmax is preserved.
+# Classes are assigned in this precedence order (first match wins).
+input_table: results/clock_alignment_v1.csv
+input_sha256_prefix: "77448352542783a8"
+grid_step_s: 0.5
+label_window_s: 2.0            # the source's label window; leads closer than this are indistinguishable by construction
+plateau_tolerance: 0.02        # rate within 0.02 of the maximum counts as "on the plateau" (~3 events at n≈160)
+classes:
+  - name: INSUFFICIENT
+    rule: quality_status != "CALIBRATED"          # NO_TRACKING_MOMENTS / INSUFFICIENT_CALIBRATION_EVENTS / INSUFFICIENT_HOLDOUT_EVENTS
+  - name: DRIFTING
+    rule: drift_status == "MATERIALLY_DRIFTING"   # |lead_H1 - lead_H2| > 2.0 s
+  - name: MULTIMODAL
+    rule: bimodal_curve == True                   # top-2 peaks within one event of each other and >= 1.0 s apart
+  - name: FLAT_PLATEAU
+    rule: plateau_width_s_within_0p02 >= 2.5      # plateau wider than the 2.0-s label window (>= 5 grid points within tolerance)
+  - name: SHARP_UNIMODAL
+    rule: otherwise                               # plateau width <= 2.0 s, single peak region, no drift
+reported_per_class:
+  - n_games, fraction
+  - plateau_width_s_within_0p02 (median, IQR)
+  - abs_half_lead_diff_s (median, IQR)
+  - rising_edge_lead_s and (calibrated_lead_s - rising_edge_lead_s)
+  - held-out turnover agreement (pooled agree/n at calibrated lead; naive)
+  - holdout_status counts (HOLDOUT_FAIL is a validation outcome, orthogonal to shape)
+limitation_carried: "argmax lead sits above the rising edge of plateau-shaped curves (median ~1 s); characterised, not corrected"

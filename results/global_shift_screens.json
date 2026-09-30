@@ -1,0 +1,28 @@
+{
+  "n_screens": 7625,
+  "n_games": 301,
+  "M0": {
+    "frac_onset_lt_0.5s": 0.276983606557377,
+    "frac_onset_lt_0.25s": 0.2583606557377049,
+    "median_onset_s": 8.040008544921875,
+    "n_with_possession": 7625,
+    "reassigned_vs_M0": 0.0,
+    "no_possession_frac": 0.0
+  },
+  "M1": {
+    "frac_onset_lt_0.5s": 0.04739899656720359,
+    "frac_onset_lt_0.25s": 0.023765513599155005,
+    "median_onset_s": 4.520002555847167,
+    "n_with_possession": 7574,
+    "reassigned_vs_M0": 0.22963934426229507,
+    "no_possession_frac": 0.006688524590163935
+  },
+  "M2": {
+    "frac_onset_lt_0.5s": 0.045160438399577445,
+    "frac_onset_lt_0.25s": 0.023240459527267925,
+    "median_onset_s": 5.5,
+    "n_with_possession": 7573,
+    "reassigned_vs_M0": 0.23881967213114755,
+    "no_possession_frac": 0.006819672131147541
+  }
+}

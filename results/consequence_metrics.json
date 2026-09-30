@@ -1,0 +1,107 @@
+{
+  "n_validated_games": 437,
+  "B": {
+    "shots": {
+      "n_events": 70679,
+      "abs_error_p05": 2.5,
+      "abs_error_p25": 3.5,
+      "abs_error_p50": 4.0,
+      "abs_error_p75": 5.0,
+      "abs_error_p95": 6.0,
+      "abs_error_mean": 4.158165791819353,
+      "frac_error_ge_2s": 1.0,
+      "frac_error_ge_4s": 0.6305833415866099
+    },
+    "turnovers": {
+      "n_events": 11692,
+      "abs_error_p05": 2.5,
+      "abs_error_p25": 3.5,
+      "abs_error_p50": 4.0,
+      "abs_error_p75": 4.5,
+      "abs_error_p95": 6.0,
+      "abs_error_mean": 4.114993157714677,
+      "frac_error_ge_2s": 1.0,
+      "frac_error_ge_4s": 0.6115292507697571
+    },
+    "eventid": {
+      "shots_matched_frac": 0.9545762528118817,
+      "shots_container_overlap_frac_of_matched": 0.6111836688339343,
+      "to_matched_frac": 0.9515497553017944,
+      "to_container_overlap_frac_of_matched": 0.5477455854620265
+    }
+  },
+  "A": {
+    "shots": {
+      "naive_team_disagreement": 0.6952194150882637,
+      "calibrated_team_disagreement": 0.02248192532435378,
+      "change_fraction_lower_bound": 0.6727374897639099,
+      "change_fraction_upper_bound": 0.7177013404126175,
+      "subsample_40_games_exact_change_fraction": 0.6967710211440747,
+      "subsample_n_events_both_labelled": 6101,
+      "subsample_naive_unlabelled_calibrated_labelled": 336
+    },
+    "turnovers": {
+      "naive_team_disagreement": 0.6180448553329909,
+      "calibrated_team_disagreement": 0.064317482039001,
+      "change_fraction_lower_bound": 0.5537273732939899,
+      "change_fraction_upper_bound": 0.6823623373719919,
+      "subsample_40_games_exact_change_fraction": 0.6078817733990147,
+      "subsample_n_events_both_labelled": 1015,
+      "subsample_naive_unlabelled_calibrated_labelled": 22
+    },
+    "screens": {
+      "n_events": 7625,
+      "n_games": 301,
+      "changed_fraction": 0.23842622950819672,
+      "no_calibrated_possession_fraction": 0.006819672131147541,
+      "ambiguous_multi_candidate_fraction": 0.02059016393442623
+    }
+  },
+  "C": {
+    "naive": {
+      "n": 7625,
+      "median_onset_s": 8.02001953125,
+      "p10": 0.010009765625,
+      "p90": 17.44000244140625,
+      "frac_lt_0.25s": 0.2620327868852459,
+      "frac_lt_0.5s": 0.28052459016393444,
+      "frac_lt_1.0s": 0.3045245901639344,
+      "frac_negative": 0.00380327868852459
+    },
+    "calibrated": {
+      "n": 7573,
+      "median_onset_s": 5.5,
+      "p10": 1.2000009155273432,
+      "p90": 18.207995605468753,
+      "frac_lt_0.25s": 0.023240459527267925,
+      "frac_lt_0.5s": 0.045160438399577445,
+      "frac_lt_1.0s": 0.08358642545886703,
+      "frac_negative": 0.0
+    }
+  },
+  "D": {
+    "all": {
+      "member_possessions": 85277,
+      "frames_naive": 13547492,
+      "frames_leaving_fraction": 0.46225124177965926,
+      "frames_calibrated": 10843723
+    },
+    "zero_span": {
+      "member_possessions": 47987,
+      "frames_naive": 1729100,
+      "frames_leaving_fraction": 1.0,
+      "frames_calibrated": 29823
+    },
+    "positive_span": {
+      "member_possessions": 37290,
+      "frames_naive": 11818392,
+      "frames_leaving_fraction": 0.38357544748896466,
+      "frames_calibrated": 10813900
+    },
+    "n_windows": 4561,
+    "n_games": 301,
+    "windows_change_gt_25pct": 0.9668496158068057,
+    "windows_change_gt_50pct": 0.4155872667398463,
+    "windows_median_change": 0.46872052813580634
+  }
+}

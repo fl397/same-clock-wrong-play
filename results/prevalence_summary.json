@@ -1,0 +1,134 @@
+{
+  "n_games": 301,
+  "n_segments": 59924,
+  "frame_reasons_corpus": {
+    "LIVE": 20654658,
+    "STOPPED_CLOCK": 3534471,
+    "CLOCK_ANOMALY": 14668,
+    "GAP_EDGE": 4535,
+    "total": 24208332
+  },
+  "corpus_nonlive_frame_share": 0.14679549173400297,
+  "segment_nonlive_frame_share": 0.14475716354338622,
+  "segments_with_any_nonlive": 0.39178966951576955,
+  "segments_gt10": 0.32435895185776714,
+  "segments_gt25": 0.20346806606174422,
+  "segments_gt50": 0.03462800779261807,
+  "ambiguous_segment_share": 0.05313396969494693,
+  "ambiguous_no_tracking_n": 855,
+  "zero_span_rows": 33996,
+  "zero_span_row_classes": {
+    "ZERO_CLOCK_SPAN_BUT_TRACKING_MOVEMENT": 31098,
+    "ZERO_SPAN_NO_TRACKING": 2785,
+    "ZERO_SPAN_STOPPED_BLOCK": 113
+  },
+  "zero_span_row_class_share": {
+    "ZERO_CLOCK_SPAN_BUT_TRACKING_MOVEMENT": 0.9148,
+    "ZERO_SPAN_NO_TRACKING": 0.0819,
+    "ZERO_SPAN_STOPPED_BLOCK": 0.0033
+  },
+  "zero_span_rows_with_live_interval_ge25": 0.9176079538769267,
+  "zero_span_row_span_frames": 22895,
+  "zero_span_row_span_stopped_frames": 14789,
+  "class_table": [
+    {
+      "interval_class": "LIVE_CONTINUOUS_PLAY",
+      "segments": 37378,
+      "frames": 12587409,
+      "live_frames": 12580558,
+      "nominal_s": 530515.4,
+      "segment_share": 0.6237567585608438,
+      "frame_share": 0.52118936293161,
+      "nominal_duration_share": 0.6030626965793753,
+      "nonlive_frame_share_within_class": 0.0005442740440070315
+    },
+    {
+      "interval_class": "FREE_THROW_ADMINISTRATION",
+      "segments": 6414,
+      "frames": 4221190,
+      "live_frames": 2552865,
+      "nominal_s": 105494.8,
+      "segment_share": 0.10703557839930579,
+      "frame_share": 0.17478095189512655,
+      "nominal_duration_share": 0.11992107781056285,
+      "nonlive_frame_share_within_class": 0.39522622767513427
+    },
+    {
+      "interval_class": "TIMEOUT",
+      "segments": 1970,
+      "frames": 1078483,
+      "live_frames": 780198,
+      "nominal_s": 36602.5,
+      "segment_share": 0.03287497496829317,
+      "frame_share": 0.04465524777200547,
+      "nominal_duration_share": 0.04160784465737768,
+      "nonlive_frame_share_within_class": 0.2765783048967856
+    },
+    {
+      "interval_class": "SUBSTITUTION_OR_ADMINISTRATION",
+      "segments": 3671,
+      "frames": 2359309,
+      "live_frames": 1819188,
+      "nominal_s": 75605.8,
+      "segment_share": 0.061260930511981844,
+      "frame_share": 0.09768863112883787,
+      "nominal_duration_share": 0.0859447956176973,
+      "nonlive_frame_share_within_class": 0.22893186098132967
+    },
+    {
+      "interval_class": "MADE_BASKET_DEAD_BALL",
+      "segments": 1832,
+      "frames": 971615,
+      "live_frames": 782106,
+      "nominal_s": 31791.8,
+      "segment_share": 0.030572057940057407,
+      "frame_share": 0.04023031291545355,
+      "nominal_duration_share": 0.036139287638232896,
+      "nonlive_frame_share_within_class": 0.1950453626179094
+    },
+    {
+      "interval_class": "OUT_OF_BOUNDS_OR_INBOUND_SETUP",
+      "segments": 2485,
+      "frames": 1294382,
+      "live_frames": 961262,
+      "nominal_s": 39749.8,
+      "segment_share": 0.041469194312796206,
+      "frame_share": 0.05359467782211123,
+      "nominal_duration_share": 0.045185533872326517,
+      "nonlive_frame_share_within_class": 0.2573583378013601
+    },
+    {
+      "interval_class": "PERIOD_BOUNDARY",
+      "segments": 736,
+      "frames": 190506,
+      "live_frames": 144807,
+      "nominal_s": 5964.2,
+      "segment_share": 0.012282224150590748,
+      "frame_share": 0.007888017365182088,
+      "nominal_duration_share": 0.006779796656117258,
+      "nonlive_frame_share_within_class": 0.23988220843438002
+    },
+    {
+      "interval_class": "SEGMENTATION_ARTIFACT",
+      "segments": 2254,
+      "frames": 76951,
+      "live_frames": 66749,
+      "nominal_s": 2967.8999999999996,
+      "segment_share": 0.037614311461184165,
+      "frame_share": 0.0031862031866089617,
+      "nominal_duration_share": 0.003373756496376783,
+      "nonlive_frame_share_within_class": 0.1325778742316539
+    },
+    {
+      "interval_class": "AMBIGUOUS",
+      "segments": 3184,
+      "frames": 1371471,
+      "live_frames": 967507,
+      "nominal_s": 51009.7,
+      "segment_share": 0.05313396969494693,
+      "frame_share": 0.05678659498306428,
+      "nominal_duration_share": 0.05798521067193329,
+      "nonlive_frame_share_within_class": 0.2945479707554881
+    }
+  ]
+}

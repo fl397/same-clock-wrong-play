@@ -1,0 +1,70 @@
+{
+  "n_games": 25,
+  "game_ids": [
+    "0021500019",
+    "0021500080",
+    "0021500311",
+    "0021500248",
+    "0021500224",
+    "0021500063",
+    "0021500207",
+    "0021500629",
+    "0021500078",
+    "0021500400",
+    "0021500188",
+    "0021500398",
+    "0021500064",
+    "0021500638",
+    "0021500037",
+    "0021500283",
+    "0021500052",
+    "0021500005",
+    "0021500319",
+    "0021500152",
+    "0021500111",
+    "0021500162",
+    "0021500198",
+    "0021500044",
+    "0021500018"
+  ],
+  "runtime_s": 312.5,
+  "python": "3.12.13",
+  "pandas": "2.2.3",
+  "numpy": "2.2.6",
+  "clone_head": "97aa40e3059026c292cd40e006531c8cec715ea2",
+  "sha256_alignment_subset_csv": "ecd627ffe52b5d9be1d57ac2d77aa723d65a68b218038b86dbe11a40bf19fc4e",
+  "pooled": {
+    "M0": {
+      "shot_wrong_team": 0.6545918367346939,
+      "turnover_wrong_team": 0.5851648351648351
+    },
+    "M1": {
+      "shot_wrong_team": 0.0412900073295871,
+      "turnover_wrong_team": 0.06164383561643838
+    },
+    "M2": {
+      "shot_wrong_team": 0.02636075176958752,
+      "turnover_wrong_team": 0.08071135430916554
+    }
+  },
+  "taxonomy_counts": {
+    "FLAT_PLATEAU": 16,
+    "SHARP_UNIMODAL": 4,
+    "MULTIMODAL": 3,
+    "DRIFTING": 2
+  },
+  "lead_status_counts": {
+    "CLOCK_CALIBRATION_VALIDATED": 20,
+    "AMBIGUOUS_LEAD": 4,
+    "DRIFTING_LEAD": 1
+  },
+  "agreement_with_main": {
+    "lead_identical": 25,
+    "status_identical": 25,
+    "taxonomy_identical": 25,
+    "max_abs_shot_rate_diff": 1.1102230246251565e-16,
+    "max_abs_to_rate_diff": 1.1102230246251565e-16,
+    "n": 25,
+    "global_shift_M1_identical": 25
+  }
+}

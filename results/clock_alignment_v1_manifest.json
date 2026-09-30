@@ -1,0 +1,32 @@
+{
+  "table": "clock_alignment_v1.csv",
+  "sha256": "77448352542783a8836d46ff3822232d884901eb049f6e6daf2fe01812dcf7ee",
+  "version": "v1",
+  "frozen": "2026-09-19",
+  "n_games": 632,
+  "lead_status_counts": {
+    "CLOCK_CALIBRATION_VALIDATED": 437,
+    "AMBIGUOUS_LEAD": 142,
+    "DRIFTING_LEAD": 40,
+    "HOLDOUT_FAIL": 12,
+    "NO_TRACKING_MOMENTS": 1
+  },
+  "source_table": "audit/PBP_SPORTVU_CLOCK_LATENCY_ALL_GAMES.csv",
+  "source_commit": "6e3ded2bde44fdcb0469509b6fc1298fefe08181",
+  "producers": [
+    "src/clock_latency_calibration.py",
+    "src/aggregate_clock_latency.py"
+  ],
+  "method": "ismayc/tracking-study d21f8e3c reproduced exactly (docs/validation/EXTERNAL_REPLICATION.md); per-game argmax of shot-team agreement over lead grid 0-8 s by 0.5; turnovers held out",
+  "sign_convention": "tracking_clock = pbp_clock + lead (lead > 0 <=> PBP stamp lags tracking); unit test in clock_latency_calibration.py --self-test",
+  "lead_quality_classes": {
+    "CLOCK_CALIBRATION_VALIDATED": "CALIBRATED, held-out turnover agreement >= 0.80, not bimodal-within-one-event at >= 1.0 s separation, |lead_H1-lead_H2| <= 2.0 s",
+    "AMBIGUOUS_LEAD": "top-2 peaks within one event and >= 1.0 s apart",
+    "DRIFTING_LEAD": "|lead_H1 - lead_H2| > 2.0 s",
+    "HOLDOUT_FAIL": "calibrated turnover agreement < 0.80",
+    "NO_TRACKING_MOMENTS": "raw file has zero moments"
+  },
+  "curve_shape_columns": "plateau_width_* / rising_edge_lead_s / n_local_maxima_within_0p02 / curve_rates (17 grid points 0.0..8.0) are DESCRIPTIVE inputs for the curve taxonomy; they do not change any lead",
+  "known_limitation": "the argmax lead sits a median ~1.0 s above the rising edge of plateau-shaped curves; no plateau-aware rule is applied; v1 preserves the source-exact method",
+  "rules": "every stage reads this table and only this table for leads; no stage may alter a lead; no downstream outcome may ever feed back into it"
+}

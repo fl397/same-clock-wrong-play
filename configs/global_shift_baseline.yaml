@@ -1,0 +1,19 @@
+# GLOBAL +4 s vs PER-GAME CALIBRATION — frozen 2026-09-20 BEFORE any M1 number exists.
+methods:
+  M0_NAIVE: {lead_s: 0.0}
+  M1_GLOBAL: {lead_s: 4.0, why: "previously observed full-corpus median (shared/clock_alignment_v1.csv, validated games); the ONLY global offset tested - no 3.5/4.5/5.0 grid"}
+  M2_PER_GAME: {lead_s: "calibrated_lead_s per game from ../results/clock_alignment_v1.csv (unchanged)"}
+universe: "all 631 calibratable games (quality_status == CALIBRATED); per-class breakdown uses taxonomy_class from results/taxonomy_by_game.csv; VALIDATED-only rows reported alongside"
+primary_evaluation:
+  label_source: "HELD-OUT TURNOVERS only (actionType == Turnover, teamId != 0), never used to choose any lead"
+  labeler: "src/clock_latency_calibration.py Labeler (nearest-player possession heuristic, [c+lead, c+lead+2.0 s], >= 5 frames, majority) - unchanged"
+  denominator: "labelled turnovers at that lead (events with < 5 frames excluded, as in the source)"
+  statistics: [pooled_agreement, per_game_median, p05, p25, p75, p95, frac_games_ge_0.90, frac_games_ge_0.95, worst_decile_mean_agreement]
+  improvement: "M2 - M1 (pooled and per-game), overall and by taxonomy class SHARP_UNIMODAL / FLAT_PLATEAU / MULTIMODAL / DRIFTING"
+secondary_structural:
+  1_shot_window_wrong_team_rate: "1 - shot-team agreement at the method's lead (calibration labels; reported, not used for selection)"
+  2_turnover_window_wrong_team_rate: "1 - held-out turnover agreement"
+  3_apparent_screen_onset_lt_0p5s: "existing detected on-ball screens on validated games; onset = possession span start (mapped with the method's lead) minus t0 tracking clock; fraction < 0.5 s (same code path as this repository consequence C)"
+  4_screen_possession_reassignment: "fraction of detected on-ball screens whose possession under the method's lead differs from the possession under M0 (consequence A logic)"
+forbidden: "using spacing/eFG, TSS, Timeout effects or any basketball-performance result to compare or select M0/M1/M2; testing any offset other than +4.0"
+producer: src/global_shift.py

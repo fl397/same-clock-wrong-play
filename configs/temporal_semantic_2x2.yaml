@@ -1,0 +1,21 @@
+# TEMPORAL × SEMANTIC 2×2 — frozen 2026-09-20 BEFORE any cell value exists.
+cells:
+  A: {clock: naive_lead_0, frames: raw}
+  B: {clock: naive_lead_0, frames: live_only}
+  C: {clock: calibrated_per_game, frames: raw}
+  D: {clock: calibrated_per_game, frames: live_only}
+universe: "the live-play universe: v3 possessions ∩ SportVU JSON ∩ CLOCK_CALIBRATION_VALIDATED (301 games); SAME possession set in all four cells; paired statistics on possessions with a value in every cell (drop-outs per cell reported)"
+possession_interval: "possession interval on the PBP axis (end_clock, prev_end_clock] mapped with the cell's lead (0 or calibrated) - identical construction to configs/LIVE_PLAY_CLASSIFIER.yaml v1 (frozen before any comparison)"
+live_filter: "frame_level_live_criterion of LIVE_PLAY_CLASSIFIER.yaml v1 (stopped runs >= 5 frames or >= 0.20 s of utc, clock anomalies, gap edges are non-live); unchanged"
+metrics:
+  M1: "mean offensive-player speed (ft/s) - LIVE_PLAY_CLASSIFIER.yaml M1 definition (consecutive kept frames of the same cell, dt <= 0.10 s, > 40 ft/s discarded)"
+  M2: "five-offensive-player convex-hull area (sq ft) - M2 definition"
+  M3: "offensive centroid dispersion (ft) - M3 definition"
+  M4: "event/window team-assignment agreement: held-out turnover windows [c+lead, c+lead+2.0] labelled by the source nearest-player heuristic using ONLY the cell's frames (raw or live-only), >= 5 frames; agreement with the PBP turnover team; pooled over the universe games; shot-window agreement reported alongside as a secondary line"
+  min_frames: 25
+statistics:
+  M1_M3: [mean, sd, paired_A_minus_B, paired_A_minus_C, paired_A_minus_D, standardized_difference_vs_D_sd, spearman_A_vs_D, mae_A_vs_D]
+  M4: [agreement_per_cell, n_labelled_per_cell]
+  decomposition: "temporal = A->C, semantic = A->B, combined = A->D; interaction = (A->D) - [(A->C) + (A->B)] reported descriptively; additivity is NOT forced"
+forbidden: "adding metrics after viewing results; changing intervals, filters or leads"
+producer: src/temporal_semantic_2x2.py

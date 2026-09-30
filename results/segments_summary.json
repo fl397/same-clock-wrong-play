@@ -1,0 +1,8 @@
+{
+  "classifier_version": 1,
+  "classifier_freeze": "frozen before any comparison",
+  "run_head": "frozen before any comparison",
+  "n_games": 301,
+  "n_segments": 59924,
+  "errors": []
+}

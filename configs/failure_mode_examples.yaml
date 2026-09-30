@@ -1,0 +1,9 @@
+# FIXED +4 s FAILURE CASES — example selection frozen BEFORE any curve is drawn. Uses ONLY alignment-curve properties.
+classes: [SHARP_UNIMODAL, FLAT_PLATEAU, MULTIMODAL, DRIFTING]
+class_source: "results/taxonomy_by_game.csv (taxonomy_class; taxonomy frozen before the labels were computed)"
+selection_rule: "within each class, the MEDOID game: the game whose 17-point shot-agreement curve (curve_rates, leads 0..8 s by 0.5) has the smallest sum of L1 distances to all other curves of the class; ties broken by smallest game_id. For DRIFTING the medoid is computed on the full-game curve; both half leads (lead_H1, lead_H2) are annotated on the panel."
+overlay: "held-out turnover agreement per lead (0..8 s by 0.5), computed for the selected games with the unchanged labeler"
+marks: [0.0, 4.0, per_game_calibrated_lead]
+forbidden: "selecting examples by any basketball outcome, spacing, TSS, or by how bad +4 s looks"
+figure: figures/FIG_ALIGNMENT_FAILURE_MODES.png
+producer: src/failure_mode_figure.py

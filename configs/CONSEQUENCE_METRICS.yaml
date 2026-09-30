@@ -1,0 +1,37 @@
+# FROZEN before calculation (2026-09-19) — structural consequence metrics of naive vs calibrated timing.
+# No headline basketball outcome, no Timeout treatment effect. Validated games only (lead_status == CLOCK_CALIBRATION_VALIDATED).
+# Sign: tracking_clock = pbp_clock + lead. A tracking instant t maps to the PBP axis at t - lead.
+population:
+  games: lead_status == CLOCK_CALIBRATION_VALIDATED (437 of 632); event-level metrics use the subset with the needed artifact
+  shots: PBP isFieldGoal == 1 and teamId != 0
+  turnovers: PBP actionType == "Turnover"
+  screens: existing detected on-ball screen events in the screen-detection table (not redistributed) (449 tracking games) — no new detector
+  v3_possessions: <DATA_ROOT>/processed/phase0_75/possessions_v3.parquet spans (PBP axis; previous-terminal → own-terminal interval rule)
+  timeout_windows: <DATA_ROOT>/processed/phase1_v3/v3_timeout_windows.parquet member possession ids (existing analysis only)
+A_possession_assignment_change:
+  pbp_events (shots, turnovers):
+    definition: >
+      The naive join reads tracking frames at [c, c+2] for an event stamped c; the calibrated join reads [c+lead, c+lead+2].
+      An event's assigned tracking possession "changes" when the majority nearest-player team label of the naive window
+      differs from the label of the calibrated window. Reported as the change fraction, and as the naive and calibrated
+      team-disagreement fractions (1 - agreement, already in the shared table, event-weighted). Labels come from the
+      frozen calibration engine (independent alignment labels), not from any outcome.
+  screens:
+    naive: possession_id recorded in screens_v3 (v3 span containing t0_game_clock on the PBP axis)
+    calibrated: v3 possession (same game, period) whose PBP span [span_end, span_start] contains t0_game_clock - lead
+    metric: fraction of events whose calibrated possession != naive possession; fraction with no calibrated possession (gap)
+B_event_relative_time_error:
+  definition: absolute difference between naive and calibrated tracking instants of a PBP event = lead of its game
+  report: event-weighted distribution over shots + turnovers (p05/p25/p50/p75/p95), separately by event type;
+          plus the eventId container relation from the per-game JSON (eventid_matched, container_overlaps_calibrated_window)
+C_early_possession_misclassification:
+  definition: onset = possession_start_pbp - t0_game_clock (naive; PBP axis)   vs   (possession_start_pbp + lead) - t0_game_clock (calibrated, with the calibrated possession)
+  report: distributions; fractions of events with onset < 0.25 s, < 0.5 s, < 1.0 s, naive vs calibrated; negative onsets (event before the start) counted separately
+D_window_membership_change:
+  definition: >
+    For every timeout-window member possession with a tracking span, naive frame set = tracking frames with
+    game_clock in [lo, hi]; calibrated set = [lo+lead, hi+lead]. Change fraction = 1 - |naive ∩ calibrated| / |naive|
+    (frames of the naive set that leave the window), frame-weighted over all member possessions;
+    reported separately for zero-span (lo == hi) and positive-span possessions, and as the share of windows whose
+    member-frame set changes by > 25 % / > 50 %.
+  restriction: structural fractions only; no TSS, PFV or effect estimate

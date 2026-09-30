@@ -1,0 +1,80 @@
+# FROZEN — live-play semantic classifier, frame-level live criterion, and the three movement metrics.
+# Frozen 2026-09-19 BEFORE any naive-vs-live metric comparison exists. Changing any rule after that
+# point is not permitted (the classifier is frozen before any result). Movement is never a class criterion.
+version: 1
+universe:
+  games: "v3 possessions ∩ SportVU JSON with moments ∩ CLOCK_CALIBRATION_VALIDATED in shared/clock_alignment_v1.csv"
+  reason: "every segment→frame mapping crosses the PBP→tracking axis, so only games with a validated lead are usable"
+  tracking_source: "raw SportVU JSON (not the v2 npz): it carries per-frame utc_ms and shot_clock, which the clock-behaviour rules need"
+  frame_dedup: "(period, utc_ms) keep-first across event containers (the same key the possession extractor uses); frames with fewer than 11 entities kept for clock rules, dropped for metrics"
+  lead_rule: "tracking_clock = pbp_clock + calibrated_lead_s (per game, from the shared table; never altered)"
+
+segment_definition:
+  # A segment = one v3 possession row's PBP-implied possession interval on the PBP clock axis.
+  # v3 rows record start_clock = clock of the row's FIRST PBP event and end_clock = clock of its terminal event,
+  # so a single-event possession has a zero-length row span. The interval a possession-based analysis intends is
+  #   (own terminal clock, previous terminal clock]  within the same period (previous terminal = end_clock of the
+  #   preceding v3 row in (game, period) ordered by end_actionNumber; for the first row of a period = period start clock,
+  #   720.0 for periods 1-4, 300.0 for overtime).
+  # Both are carried: `row_span` (what the frozen Screen/Timeout chains masked on) and `interval` (this audit's segment).
+  interval_pbp_axis: "(end_clock, prev_end_clock]"
+  interval_tracking_axis: "(end_clock + lead, prev_end_clock + lead]   # half-open: a stopped-clock block sitting exactly at a terminal stamp belongs to the FOLLOWING segment (it is that segment's inbound / free-throw set-up)"
+  row_span_tracking_axis: "[end_clock + lead, start_clock + lead]     # closed, as in the possession-feature producer after the lead shift"
+  pbp_events_inside: "PBP rows of the game with actionNumber in (prev_end_actionNumber, end_actionNumber] (all rows, including those v3 assigns to no possession: fouls, substitutions, timeouts, replays)"
+  preceding_event: "terminal_event of the preceding v3 row (or PERIOD_START)"
+  following_event: "terminal_event of the following v3 row (or PERIOD_END)"
+
+frame_level_live_criterion:
+  # Purely clock-behavioural. Within a period, frames are sorted by utc.
+  stopped_run: "a maximal run of consecutive frames with identical game_clock that has >= 5 frames OR spans >= 0.20 s of utc"
+  live_frame: "game_clock strictly less than the previous frame's clock (clock running), previous frame within 0.20 s of utc, and the frame is not inside a stopped_run"
+  non_live_frame: "inside a stopped_run (STOPPED_CLOCK), or clock increases vs the previous frame within 0.20 s (CLOCK_ANOMALY), or first frame after a utc gap > 0.20 s (GAP_EDGE — no velocity is definable)"
+  rationale: "NBA rules stop the game clock whenever the ball is dead (free throws, timeouts, out-of-bounds, fouls, after made field goals in the last minute of Q4/OT, substitutions at stoppages); the clock runs only while the ball is live. Stationary players in live play are therefore LIVE under this rule; movement plays no role."
+
+segment_classes:
+  # Assigned in this priority order; first match wins. f_live = live frames / naive frames of the interval.
+  - SEGMENTATION_ARTIFACT: "interval length <= 0 on the PBP axis (prev_end_clock <= end_clock), or the row's start_clock > prev_end_clock (row escapes its interval), or negative row span"
+  - AMBIGUOUS_NO_TRACKING: "interval > 0 but fewer than 5 deduplicated frames map into it (tracking gap) — reported inside AMBIGUOUS with reason"
+  - PERIOD_BOUNDARY: "terminal_event in {period_end, game_end}"
+  - LIVE_CONTINUOUS_PLAY: "f_live >= 0.95 and naive frames >= 25"
+  - TIMEOUT: "a PBP row with actionType == 'Timeout' lies inside the interval"
+  - FREE_THROW_ADMINISTRATION: "a PBP row with actionType == 'Free Throw' lies inside the interval, or preceding_event in {free_throw_made, interrupted_by_ft}"
+  - SUBSTITUTION_OR_ADMINISTRATION: "a PBP row with actionType in {Substitution, Instant Replay, Ejection, Jump Ball, Foul} lies inside the interval (fouls without free throws stop the clock for administration)"
+  - OUT_OF_BOUNDS_OR_INBOUND_SETUP: "preceding_event == turnover whose PBP row subType/description contains 'Out of Bounds', or a PBP row with actionType == 'Violation' inside the interval, or preceding_event == turnover with f_live < 0.95"
+  - MADE_BASKET_DEAD_BALL: "preceding_event in {made_shot, made_shot_and1} (the interval opens with the inbound after a score) and f_live < 0.95"
+  - AMBIGUOUS: "everything else (clock stopped for a reason the PBP rows do not name)"
+  multi_label_flags: "has_timeout, has_free_throw, has_substitution_or_admin, has_oob_or_violation, follows_made_basket — stored for descriptive breakouts regardless of the assigned class"
+
+row_span_classes:
+  # The v3 row span as the frozen chains masked it (closed interval [end+lead, start+lead]).
+  - NEGATIVE_SPAN_ARTIFACT: "start_clock < end_clock"
+  - ZERO_SPAN_STOPPED_BLOCK: "start_clock == end_clock and the frames at that tracking clock form a stopped_run (>= 5 frames)"
+  - ZERO_CLOCK_SPAN_BUT_TRACKING_MOVEMENT: "start_clock == end_clock and at most 4 frames sit at that clock value while the interval (end, prev_end] contains >= 25 live frames — the possession's play is real but the row does not span it"
+  - ZERO_SPAN_NO_TRACKING: "start_clock == end_clock and neither of the above"
+  - POSITIVE_SPAN: "start_clock > end_clock"
+  zero_span_hypothesis_test: "H0 'zero-span row = dead ball' is REJECTED for a row if it is ZERO_CLOCK_SPAN_BUT_TRACKING_MOVEMENT; the report gives the fraction of zero-span rows in each row class"
+
+metrics:
+  per_frame_requirements: "exactly 5 entities with team_id == offense_team_id and a ball entity; frames failing this are dropped from BOTH conditions and counted"
+  M1_player_speed: "mean over the 5 offensive players of |Δxy| / Δutc between consecutive kept frames of the SAME condition with Δutc <= 0.10 s (ft/s, values > 40 ft/s discarded as tracking glitches); possession value = mean over the possession's speed samples"
+  M2_offensive_spacing: "scipy ConvexHull area (sq ft) of the 5 offensive players' xy per frame; possession value = mean over kept frames"
+  M3_team_dispersion: "mean Euclidean distance (ft) of the 5 offensive players from their centroid per frame; possession value = mean over kept frames"
+  conditions:
+    NAIVE_PBP_POSSESSION: "all deduplicated frames in the interval (end + lead, prev_end + lead]"
+    LIVE_PLAY_ONLY: "the NAIVE frames that satisfy frame_level_live_criterion"
+  min_frames_for_possession_value: 25
+  aggregation:
+    possession: "as above"
+    game: "mean over the (game, offense team) possessions that have a value in that condition"
+    team_season: "possession-weighted mean over all offensive possessions of the team in the corpus with a value in that condition (30 teams); ranks 1..30 descending"
+  distortion_statistics: "possession level (pairs with both values): paired mean difference (naive − live), standardized difference = mean diff / SD of live values, Pearson, Spearman, MAE, p90 |diff|; also the count of possessions with a NAIVE value but no LIVE value (fully dead). Game level: same on (game, team) pairs. Team-season: Spearman rank correlation, max and median absolute rank shift."
+
+context_dependence:
+  clean: "interval_class == LIVE_CONTINUOUS_PLAY"
+  with_nonlive: "interval_class in {TIMEOUT, FREE_THROW_ADMINISTRATION, SUBSTITUTION_OR_ADMINISTRATION, OUT_OF_BOUNDS_OR_INBOUND_SETUP, MADE_BASKET_DEAD_BALL}"
+  statistic: "|naive − live| for M1/M2/M3, compared between the two groups (medians, p90, and a two-sided Mann–Whitney U reported descriptively); construct check, not inference"
+
+timeout_case_study_structure_only:
+  windows: "<DATA_ROOT>/processed/phase1_v3/v3_timeout_windows.parquet pre/post possession ids, restricted to the universe games"
+  report: "fraction of windows (with >= 1 member) containing >= 1 member of a non-live class; fraction of member possessions non-live class; fraction of member interval frames that are non-live; fraction of member ROW-SPAN frames that are stopped-clock blocks (what the frozen chain actually consumed)"
+  forbidden: "any TSS, d_off, d_def or effect estimate"

@@ -1,0 +1,46 @@
+{
+  "SHARP_UNIMODAL": {
+    "game_id": "0021500455",
+    "stem": "12.27.2015.LAL.at.MEM",
+    "calibrated_lead_s": 4.5,
+    "plateau_width_s": 2.0,
+    "to_rate_at_0": 0.22727272727272727,
+    "to_rate_at_4": 0.9565217391304348,
+    "to_rate_at_lead": 0.9565217391304348,
+    "lead_H1": 4.0,
+    "lead_H2": 5.0
+  },
+  "FLAT_PLATEAU": {
+    "game_id": "0021500360",
+    "stem": "12.14.2015.MIA.at.ATL",
+    "calibrated_lead_s": 4.0,
+    "plateau_width_s": 3.0,
+    "to_rate_at_0": 0.5172413793103449,
+    "to_rate_at_4": 0.9310344827586207,
+    "to_rate_at_lead": 0.9310344827586207,
+    "lead_H1": 4.0,
+    "lead_H2": 4.0
+  },
+  "MULTIMODAL": {
+    "game_id": "0021500033",
+    "stem": "10.31.2015.UTA.at.IND",
+    "calibrated_lead_s": 3.5,
+    "plateau_width_s": 3.5,
+    "to_rate_at_0": 0.4,
+    "to_rate_at_4": 1.0,
+    "to_rate_at_lead": 1.0,
+    "lead_H1": 3.0,
+    "lead_H2": 2.5
+  },
+  "DRIFTING": {
+    "game_id": "0021500491",
+    "stem": "01.01.2016.DAL.at.MIA",
+    "calibrated_lead_s": 5.5,
+    "plateau_width_s": 4.5,
+    "to_rate_at_0": 0.5238095238095238,
+    "to_rate_at_4": 1.0,
+    "to_rate_at_lead": 0.9047619047619048,
+    "lead_H1": 5.5,
+    "lead_H2": 3.0
+  }
+}
